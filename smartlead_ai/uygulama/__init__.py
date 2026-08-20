@@ -18,7 +18,13 @@ def uygulama_olustur(ayar_adi=None):
     with uygulama.app_context():
         veritabani_baslat(uygulama)
         
+    # Rotaları API önekiyle bağlıyoruz
     from uygulama.rotalar import api_arayuzu
     uygulama.register_blueprint(api_arayuzu, url_prefix='/api')
+    
+    # Doğrudan ana linke tıklandığında 404 vermemesi için test rotası
+    @uygulama.route('/')
+    def ana_sayfa():
+        return {'durum': 'calisiyor', 'mesaj': 'Backend aktif!'}
     
     return uygulama
